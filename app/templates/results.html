@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Model Predictions</h1>
+
+<div class="row">
+  <div class="col-md-12">
+    <div id="chart" style="width: 100%;"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div>
+      <h3>Sample Predictions</h3>
+      {{ table.__html__() | safe }}
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div>
+      <h3>Summary Statistics</h3>
+      <ul>
+        <li>Count: {{ summary['count'] }}</li>
+        <li>Mean: {{ summary['mean'] }}</li>
+        <li>Standard Deviation: {{ summary['std'] }}</li>
+        <li>Minimum: {{ summary['min'] }}</li>
+        <li>25th Percentile: {{ summary['25%'] }}</li>
+        <li>Median: {{ summary['50%'] }}</li>
+        <li>75th Percentile: {{ summary['75%'] }}</li>
+        <li>Maximum: {{ summary['max'] }}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var original_data = {{ original_data | tojson }};
+  var predictions = {{ predictions | tojson }};
+  
+  var original_trace = {
+    x: Object.keys(original_data),
+    y: Object.values(original_data),
+    mode: 'lines',
+    name: 'Original data',
+    line: {
+      color: 'blue',
+    },
+    type: 'scatter'
+  };
+
+  var prediction_trace = {
+    x: Object.keys(predictions),
+    y: Object.values(predictions),
+    mode: 'lines',
+    name: 'Predictions',
+    line: {
+      color: 'red',
+    },
+    type: 'scatter'
+  };
+  
+  var data = [original_trace, prediction_trace];
+  
+  var layout = {
+    title: 'Cashflow Predictions',
+    xaxis: {
+      title: 'Date'
+    },
+    yaxis: {
+      title: 'Predicted Mean'
+    }
+  };
+
+  Plotly.newPlot('chart', data, layout);
+</script>
+
+{% endblock %}

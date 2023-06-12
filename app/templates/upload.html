@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+.upload-container {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    width: 600px;
+    padding: 20px;
+    margin: auto;
+    text-align: center;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.1), -10px -10px 15px rgba(255, 255, 255, 0.7);
+}
+
+.custom-file-upload {
+    background: transparent;
+    border: 1px solid #000;
+    border-radius: 15px;
+    padding: 10px;
+    width: 80%;
+    margin-bottom: 10px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.upload-container input[type="file"] {
+    display: none;
+}
+
+.upload-container input[type="submit"] {
+    background: transparent;
+    border: 1px solid #000;
+    border-radius: 15px;
+    padding: 10px;
+    width: 80%;
+    margin: 20px auto;
+    text-align: center;
+    display: block;
+}
+
+.upload-container input[type="submit"]:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+</style>
+
+<div class="upload-container my-5">
+    <h2>Upload your file</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <label for="file" class="custom-file-upload">Choose File</label>
+        <input id="file" type="file" name="file">
+        <p id="file-name" class="mb-3"></p>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="True" id="train_new_model" name="train_new_model">
+            <label class="form-check-label" for="train_new_model">Train new model</label>
+        </div>
+        <input type="submit" value="Upload">
+    </form>
+</div>
+
+<script>
+    document.getElementById('file').addEventListener('change', function(e) {
+        document.getElementById('file-name').textContent = e.target.value.split('\\').pop();
+    });
+</script>
+
+{% endblock %}
